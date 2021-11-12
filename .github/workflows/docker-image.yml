@@ -12,7 +12,11 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    steps:
+    steps: 
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: |
+         docker login --username=${{ secrets.SECRET_NAME }} --password=${{ secrets.SECRET_PASSWD }} registry.cn-hangzhou.aliyuncs.com
+         docker build . --file Dockerfile --tag registry.cn-hangzhou.aliyuncs.com/lyn_pytorch/code_server:$(date +%s)
+         docker push registry.cn-hangzhou.aliyuncs.com/lyn_pytorch/code_server:$(date +%s)
+         
