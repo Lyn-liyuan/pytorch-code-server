@@ -1,7 +1,8 @@
-FROM nvidia/cuda:11.1-base-ubuntu20.04
+FROM pytorch/pytorch:1.8.1-cuda10.2-cudnn7-devel
 
 # Install dependencies
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+  build-essential \
   curl \
   ca-certificates \
   dumb-init \
@@ -18,9 +19,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
   openssh-client \
   vim.tiny \
   lsb-release \
-  python \
-  python3-pip \
-  python3-opencv \
   && rm -rf /var/lib/apt/lists/*
 
 RUN sed -i "s/# en_US.UTF-8/en_US.UTF-8/" /etc/locale.gen \
@@ -56,5 +54,5 @@ ENV USER=coder
 ENV HOME=/home/coder
 WORKDIR /projects
 
-EXPOSE 8443
-ENTRYPOINT ["/usr/bin/entrypoint.sh", "--bind-addr", "0.0.0.0:8443", "--cert", "--disable-telemetry", "."]
+EXPOSE 8090
+ENTRYPOINT ["/usr/bin/entrypoint.sh", "--bind-addr", "0.0.0.0:8090", "--cert", "--disable-telemetry", "."]
