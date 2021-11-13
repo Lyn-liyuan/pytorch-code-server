@@ -20,7 +20,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
   lsb-release \
   python3-pip \
   && rm -rf /var/lib/apt/lists/*
-RUN pip install -y cv2 
+RUN pip install cv2 --quiet 
 
 RUN sed -i "s/# en_US.UTF-8/en_US.UTF-8/" /etc/locale.gen \
   && locale-gen
