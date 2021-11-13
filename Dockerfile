@@ -7,7 +7,6 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
   ca-certificates \
   dumb-init \
   htop \
-  sudo \
   git \
   bzip2 \
   libx11-6 \
@@ -19,7 +18,9 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
   openssh-client \
   vim.tiny \
   lsb-release \
+  python3-pip
   && rm -rf /var/lib/apt/lists/*
+RUN pip install -y cv2 
 
 RUN sed -i "s/# en_US.UTF-8/en_US.UTF-8/" /etc/locale.gen \
   && locale-gen
