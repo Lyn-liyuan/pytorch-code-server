@@ -18,7 +18,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
   openssh-client \
   vim.tiny \
   lsb-release \
-  python3-pip
+  python3-pip \
   && rm -rf /var/lib/apt/lists/*
 RUN pip install -y cv2 
 
