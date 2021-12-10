@@ -32,7 +32,7 @@ RUN mkdir /projects
 # Create a non-root user
 RUN adduser --disabled-password --gecos '' --shell /bin/bash coder \
   && chown -R coder:coder /projects
-RUN echo "coder ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/90-coder
+#RUN echo "coder ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/90-coder
 
 # Install fixuid
 ENV ARCH=amd64
