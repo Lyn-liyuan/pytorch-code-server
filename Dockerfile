@@ -50,7 +50,6 @@ WORKDIR /tmp
 ENV CODE_SERVER_VERSION=4.0.0
 RUN curl -fOL https://github.com/cdr/code-server/releases/download/v${CODE_SERVER_VERSION}/code-server_${CODE_SERVER_VERSION}_${ARCH}.deb
 RUN dpkg -i ./code-server_${CODE_SERVER_VERSION}_${ARCH}.deb && rm ./code-server_${CODE_SERVER_VERSION}_${ARCH}.deb
-RUN code-server --install-extension ms-python.python
 COPY ./entrypoint.sh /usr/bin/entrypoint.sh
 
 # Switch to default user
@@ -58,6 +57,7 @@ USER coder
 ENV USER=coder
 ENV HOME=/home/coder
 WORKDIR /home/coder/projects
+RUN code-server --install-extension ms-python.python
 
 EXPOSE 8090
 ENTRYPOINT ["/usr/bin/entrypoint.sh", "--bind-addr", "0.0.0.0:8090", "--cert", "--disable-telemetry", "."]
