@@ -18,5 +18,5 @@ jobs:
       run: |
          docker login --username=${{ secrets.SECRET_NAME }} --password=${{ secrets.SECRET_PASSWD }} registry.cn-hangzhou.aliyuncs.com
          docker build . --file Dockerfile --tag registry.cn-hangzhou.aliyuncs.com/lyn_pytorch/code_server:v2
-         docker push registry.cn-hangzhou.aliyuncs.com/lyn_pytorch/code_server:v2
+         docker push registry.cn-hangzhou.aliyuncs.com/lyn_pytorch/code_server:v3
          
