@@ -81,4 +81,5 @@ RUN /usr/bin/code-server --install-extension ms-python.python && \
     /usr/bin/code-server --install-extension dbaeumer.vscode-eslint
 
 EXPOSE 8090
+
 ENTRYPOINT ["/usr/bin/entrypoint.sh", "--bind-addr", "0.0.0.0:8090", "--cert", "--disable-telemetry", "."]
