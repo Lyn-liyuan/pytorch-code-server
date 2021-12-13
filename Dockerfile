@@ -51,12 +51,9 @@ RUN curl -fOL https://github.com/cdr/code-server/releases/download/v${CODE_SERVE
 RUN dpkg -i ./code-server_${CODE_SERVER_VERSION}_${ARCH}.deb && rm ./code-server_${CODE_SERVER_VERSION}_${ARCH}.deb
 COPY ./entrypoint.sh /usr/bin/entrypoint.sh
 
-# Switch to default user
-USER coder
 
-ENV PASSWORD=${PASSWORD:-P@ssw0rd}
-
-ENV USER=coder
+    
+USER root
 
 # Create project directory
 RUN mkdir -p /home/coder/workspace && \
@@ -64,6 +61,17 @@ RUN mkdir -p /home/coder/workspace && \
     chown -R coder:coder /home/coder && \
     chown -R coder:coder /home/coder/.local && \
     chown -R coder:coder /home/coder/workspace;
+
+
+# Switch to default user
+USER coder
+
+
+ENV PASSWORD=${PASSWORD:-P@ssw0rd}
+
+ENV USER=coder
+
+
 
 ENV HOME=/home/coder
 WORKDIR /home/coder/workspace
@@ -80,7 +88,8 @@ RUN /usr/bin/code-server --install-extension ms-python.python && \
     /usr/bin/code-server --install-extension equinusocio.vsc-material-theme-icons && \
     /usr/bin/code-server --install-extension eg2.vscode-npm-script && \
     /usr/bin/code-server --install-extension ms-ceintl.vscode-language-pack-zh-hans && \
-    /usr/bin/code-server --install-extension dbaeumer.vscode-eslint
+    /usr/bin/code-server --install-extension dbaeumer.vscode-eslint && \
+    /usr/bin/code-server --list-extensions
 
 EXPOSE 8090
 
