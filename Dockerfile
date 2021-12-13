@@ -26,13 +26,16 @@ RUN sed -i "s/# en_US.UTF-8/en_US.UTF-8/" /etc/locale.gen \
   && locale-gen
 ENV LANG=en_US.UTF-8
 
-# Create project directory
-RUN mkdir /projects
+
 
 # Create a non-root user
-RUN adduser --disabled-password --gecos '' --shell /bin/bash coder \
-  && chown -R coder:coder /projects
+RUN adduser --disabled-password --gecos '' --shell /bin/bash coder
+
 #RUN echo "coder ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/90-coder
+
+# Create project directory
+RUN mkdir /home/coder/projects && chown -R coder:coder /projects
+
 
 # Install fixuid
 ENV ARCH=amd64
@@ -44,16 +47,17 @@ RUN curl -fsSL "https://github.com/boxboat/fixuid/releases/download/v0.4.1/fixui
 
 # Install code-server
 WORKDIR /tmp
-ENV CODE_SERVER_VERSION=3.10.0
+ENV CODE_SERVER_VERSION=4.0.0
 RUN curl -fOL https://github.com/cdr/code-server/releases/download/v${CODE_SERVER_VERSION}/code-server_${CODE_SERVER_VERSION}_${ARCH}.deb
 RUN dpkg -i ./code-server_${CODE_SERVER_VERSION}_${ARCH}.deb && rm ./code-server_${CODE_SERVER_VERSION}_${ARCH}.deb
+RUN code-server --install-extension ms-python.python
 COPY ./entrypoint.sh /usr/bin/entrypoint.sh
 
 # Switch to default user
 USER coder
 ENV USER=coder
 ENV HOME=/home/coder
-WORKDIR /projects
+WORKDIR /home/coder/projects
 
 EXPOSE 8090
 ENTRYPOINT ["/usr/bin/entrypoint.sh", "--bind-addr", "0.0.0.0:8090", "--cert", "--disable-telemetry", "."]
