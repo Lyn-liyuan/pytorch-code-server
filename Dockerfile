@@ -34,7 +34,7 @@ RUN adduser --disabled-password --gecos '' --shell /bin/bash coder
 #RUN echo "coder ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/90-coder
 
 # Create project directory
-RUN mkdir /home/coder/projects && chown -R coder:coder /projects
+RUN mkdir /home/coder/projects && chown -R coder:coder /home/coder/projects
 
 
 # Install fixuid
