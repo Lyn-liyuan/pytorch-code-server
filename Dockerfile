@@ -52,19 +52,16 @@ RUN dpkg -i ./code-server_${CODE_SERVER_VERSION}_${ARCH}.deb && rm ./code-server
 COPY ./entrypoint.sh /usr/bin/entrypoint.sh
 
 
-    
-USER root
-
-# Create project directory
-RUN mkdir -p /home/coder/workspace && \
-    mkdir -p /home/coder/.local && \
-    chown -R coder:coder /home/coder && \
-    chown -R coder:coder /home/coder/.local && \
-    chown -R coder:coder /home/coder/workspace;
 
 
 # Switch to default user
 USER coder
+# Create project directory
+RUN mkdir -p /home/coder/workspace && \
+    mkdir -p /home/coder/.local && \
+    chown -R coder:coder /home/coder && \
+    chown -R coder:coder /home/coder/.local;
+RUN chown -R coder:coder /home/coder/workspace
 
 
 ENV PASSWORD=${PASSWORD:-P@ssw0rd}
@@ -76,20 +73,7 @@ ENV USER=coder
 ENV HOME=/home/coder
 WORKDIR /home/coder/workspace
 
-RUN /usr/bin/code-server --install-extension ms-python.python && \
-    /usr/bin/code-server --install-extension esbenp.prettier-vscode && \
-    /usr/bin/code-server --install-extension equinusocio.vsc-material-theme && \
-    /usr/bin/code-server --install-extension codezombiech.gitignore && \
-    /usr/bin/code-server --install-extension piotrpalarz.vscode-gitignore-generator && \
-    /usr/bin/code-server --install-extension aeschli.vscode-css-formatter && \
-    /usr/bin/code-server --install-extension donjayamanne.githistory && \
-    /usr/bin/code-server --install-extension ecmel.vscode-html-css && \
-    /usr/bin/code-server --install-extension pkief.material-icon-theme && \
-    /usr/bin/code-server --install-extension equinusocio.vsc-material-theme-icons && \
-    /usr/bin/code-server --install-extension eg2.vscode-npm-script && \
-    /usr/bin/code-server --install-extension ms-ceintl.vscode-language-pack-zh-hans && \
-    /usr/bin/code-server --install-extension dbaeumer.vscode-eslint && \
-    /usr/bin/code-server --list-extensions
+RUN /usr/bin/code-server --install-extension ms-python.python
 
 EXPOSE 8090
 
