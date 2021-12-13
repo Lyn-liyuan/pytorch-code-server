@@ -33,13 +33,7 @@ RUN adduser --disabled-password --gecos '' --shell /bin/bash coder
 
 #RUN echo "coder ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/90-coder
 
-# Create project directory
-RUN chmod g+rw /home && \
-    mkdir -p /home/coder/workspace && \
-    mkdir -p /home/coder/.local && \
-    chown -R coder:coder /home/coder && \
-    chown -R coder:coder /home/coder/.local && \
-    chown -R coder:coder /home/coder/workspace;
+
 
 
 # Install fixuid
@@ -52,7 +46,7 @@ RUN curl -fsSL "https://github.com/boxboat/fixuid/releases/download/v0.4.1/fixui
 
 # Install code-server
 WORKDIR /tmp
-ENV CODE_SERVER_VERSION=3.10.2
+ENV CODE_SERVER_VERSION=3.12.0
 RUN curl -fOL https://github.com/cdr/code-server/releases/download/v${CODE_SERVER_VERSION}/code-server_${CODE_SERVER_VERSION}_${ARCH}.deb
 RUN dpkg -i ./code-server_${CODE_SERVER_VERSION}_${ARCH}.deb && rm ./code-server_${CODE_SERVER_VERSION}_${ARCH}.deb
 COPY ./entrypoint.sh /usr/bin/entrypoint.sh
@@ -63,6 +57,14 @@ USER coder
 ENV PASSWORD=${PASSWORD:-P@ssw0rd}
 
 ENV USER=coder
+
+# Create project directory
+RUN mkdir -p /home/coder/workspace && \
+    mkdir -p /home/coder/.local && \
+    chown -R coder:coder /home/coder && \
+    chown -R coder:coder /home/coder/.local && \
+    chown -R coder:coder /home/coder/workspace;
+
 ENV HOME=/home/coder
 WORKDIR /home/coder/workspace
 
