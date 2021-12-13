@@ -34,7 +34,12 @@ RUN adduser --disabled-password --gecos '' --shell /bin/bash coder
 #RUN echo "coder ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/90-coder
 
 # Create project directory
-RUN mkdir /home/coder/projects && chown -R coder:coder /home/coder/projects
+RUN chmod g+rw /home && \
+    mkdir -p /home/coder/workspace && \
+    mkdir -p /home/coder/.local && \
+    chown -R coder:coder /home/coder && \
+    chown -R coder:coder /home/coder/.local && \
+    chown -R coder:coder /home/coder/workspace;
 
 
 # Install fixuid
@@ -54,10 +59,26 @@ COPY ./entrypoint.sh /usr/bin/entrypoint.sh
 
 # Switch to default user
 USER coder
+
+ENV PASSWORD=${PASSWORD:-P@ssw0rd}
+
 ENV USER=coder
 ENV HOME=/home/coder
-WORKDIR /home/coder/projects
-RUN code-server --install-extension ms-python.python
+WORKDIR /home/coder/workspace
+
+RUN /usr/bin/code-server --install-extension ms-python.python && \
+    /usr/bin/code-server --install-extension esbenp.prettier-vscode && \
+    /usr/bin/code-server --install-extension equinusocio.vsc-material-theme && \
+    /usr/bin/code-server --install-extension codezombiech.gitignore && \
+    /usr/bin/code-server --install-extension piotrpalarz.vscode-gitignore-generator && \
+    /usr/bin/code-server --install-extension aeschli.vscode-css-formatter && \
+    /usr/bin/code-server --install-extension donjayamanne.githistory && \
+    /usr/bin/code-server --install-extension ecmel.vscode-html-css && \
+    /usr/bin/code-server --install-extension pkief.material-icon-theme && \
+    /usr/bin/code-server --install-extension equinusocio.vsc-material-theme-icons && \
+    /usr/bin/code-server --install-extension eg2.vscode-npm-script && \
+    /usr/bin/code-server --install-extension ms-ceintl.vscode-language-pack-zh-hans && \
+    /usr/bin/code-server --install-extension dbaeumer.vscode-eslint
 
 EXPOSE 8090
 ENTRYPOINT ["/usr/bin/entrypoint.sh", "--bind-addr", "0.0.0.0:8090", "--cert", "--disable-telemetry", "."]
