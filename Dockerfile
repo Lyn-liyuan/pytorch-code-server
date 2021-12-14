@@ -71,7 +71,8 @@ ENV USER=coder
 ENV HOME=/home/coder
 WORKDIR /workspace
 
-RUN /usr/bin/code-server --install-extension ms-python.python
+RUN /usr/bin/code-server --install-extension ms-python.python && \
+    /usr/bin/code-server --install-extension ms-python.vscode-pylance;
 
 EXPOSE 8090
 
