@@ -73,7 +73,7 @@ WORKDIR /workspace
 
 RUN /usr/bin/code-server --install-extension ms-python.python
 RUN curl -fOL https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-python/vsextensions/vscode-pylance/2021.12.2/vspackage
-RUN move vspackage ms-python.vscode-pylance-2021.12.2.vsix
+RUN mv vspackage ms-python.vscode-pylance-2021.12.2.vsix
 RUN /usr/bin/code-server --install-extension ms-python.vscode-pylance-2021.12.2.vsix
 RUN rm ms-python.vscode-pylance-2021.12.2.vsix
 
