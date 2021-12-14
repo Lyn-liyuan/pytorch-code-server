@@ -51,18 +51,16 @@ RUN curl -fOL https://github.com/cdr/code-server/releases/download/v${CODE_SERVE
 RUN dpkg -i ./code-server_${CODE_SERVER_VERSION}_${ARCH}.deb && rm ./code-server_${CODE_SERVER_VERSION}_${ARCH}.deb
 COPY ./entrypoint.sh /usr/bin/entrypoint.sh
 
-
+# Create project directory
+RUN mkdir -p /workspace && \
+    mkdir -p /home/coder/.local && \
+    chown -R coder:coder /home/coder && \
+    chown -R coder:coder /home/coder/.local;
+RUN chown -R coder:coder /workspace
 
 
 # Switch to default user
 USER coder
-# Create project directory
-RUN mkdir -p /home/coder/workspace && \
-    mkdir -p /home/coder/.local && \
-    chown -R coder:coder /home/coder && \
-    chown -R coder:coder /home/coder/.local;
-RUN chown -R coder:coder /home/coder/workspace
-
 
 ENV PASSWORD=${PASSWORD:-P@ssw0rd}
 
@@ -71,7 +69,7 @@ ENV USER=coder
 
 
 ENV HOME=/home/coder
-WORKDIR /home/coder/workspace
+WORKDIR /workspace
 
 RUN /usr/bin/code-server --install-extension ms-python.python
 
