@@ -61,6 +61,7 @@ RUN mkdir -p /home/coder/workspace && \
     mkdir -p /home/coder/.local && \
     chown -R coder:coder /home/coder && \
     chown -R coder:coder /home/coder/.local;
+RUN chown -R coder:coder /home/coder/workspace
 
 
 ENV PASSWORD=${PASSWORD:-P@ssw0rd}
@@ -70,7 +71,7 @@ ENV USER=coder
 
 
 ENV HOME=/home/coder
-WORKDIR /home/coder
+WORKDIR /home/coder/workspace
 
 RUN /usr/bin/code-server --install-extension ms-python.python
 
