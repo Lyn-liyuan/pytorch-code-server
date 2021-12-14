@@ -9,7 +9,7 @@ RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-ins
   htop \
   git \
   bzip2 \
-  gunzip \
+  gzip \
   libx11-6 \
   locales \
   man \
